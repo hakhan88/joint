@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/2.1.0/joint.css" />
+</head>
+
+<body>
+    <!-- content -->
+    <div id="myholder"></div>
+    <div id="myholder2"></div>
+
+    <!-- dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/2.1.0/joint.js"></script>
+
+    <!-- code -->
+    <script type="text/javascript">
+
+        var graph = new joint.dia.Graph;
+
+        var paper = new joint.dia.Paper({
+            el: document.getElementById('myholder'),
+            model: graph,
+            width: 600,
+            height: 100,
+            gridSize: 1,
+            background: {
+                color: 'white'
+            },
+            interactive: true
+        });
+
+        setTimeout(() => {
+            graph.fromJSON(JSON.parse('{"cells":[{"type":"standard.Rectangle","position":{"x":100,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"e0639e49-d7d0-4055-9ac5-733795418c97","z":1,"attrs":{"body":{"fill":"white","cursor":"pointer","stoke":"black"},"label":{"fill":"black","text":"Element #1","cursor":"pointer"}}},{"type":"standard.Rectangle","position":{"x":400,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"b925dc8f-7db2-4a6e-8f4e-821a80cefe29","z":1,"attrs":{"body":{"fill":"white","cursor":"pointer","stoke":"black"},"label":{"fill":"black","text":"Element #2","cursor":"pointer"}}},{"type":"standard.Link","source":{"id":"e0639e49-d7d0-4055-9ac5-733795418c97"},"target":{"id":"b925dc8f-7db2-4a6e-8f4e-821a80cefe29"},"id":"d6ca7828-a9fd-46c9-9b7c-21508790d87c","labels":[{"markup":[{"tagName":"rect","selector":"body"},{"tagName":"text","selector":"label"}],"attrs":{"label":{"cursor":"pointer","text":"Link","textAnchor":"middle","textVerticalAnchor":"middle","fontSize":12,"fill":"black"},"body":{"cursor":"pointer","ref":"label","refX":"-10%","refY":"-10%","refWidth":"120%","refHeight":"120%","fill":"white","stroke":"black","strokeWidth":2}}}],"z":2,"attrs":{"line":{"stroke":"black"}}},{"type":"standard.Rectangle","position":{"x":250,"y":70},"size":{"width":100,"height":20},"angle":0,"id":"160620e6-a95b-48a0-b684-f34ea3d7705d","z":3,"attrs":{"body":{"fill":"white","visibility":"hidden","cursor":"default","stoke":"black"},"label":{"fontSize":12,"fill":"black","visibility":"hidden","text":"Link clicked","cursor":"default"}}}]}'));
+        }, 2000);
+
+    </script>
+</body>
+
+</html>
