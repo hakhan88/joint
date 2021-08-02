@@ -11,6 +11,12 @@
     <div id="myholder2"></div>
 
     <!-- dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/graphlib/2.1.8/graphlib.min.js"
+        integrity="sha512-KV/PFSmTCD8e1BUHY6DJVSi/LW/2kLPzC+0IT2ydsi+sW14TJUFxFsitd8HZVYb2b6KiMx3T29H2z7pcNgtUmQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"
+        integrity="sha512-psLUZfcgPmi012lcpVHkWoOqyztollwCGu4w/mXijFMK/YcdUdP06voJNVOJ7f/dUIlO2tGlDLuypRyXX2lcvQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js"></script>
@@ -25,7 +31,7 @@
             el: document.getElementById('myholder'),
             model: graph,
             width: 600,
-            height: 100,
+            height: 600,
             gridSize: 1,
             background: {
                 color: 'white'
@@ -34,7 +40,73 @@
         });
 
         setTimeout(() => {
-            graph.fromJSON(JSON.parse('{"cells":[{"type":"standard.Rectangle","position":{"x":100,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"e0639e49-d7d0-4055-9ac5-733795418c97","z":1,"attrs":{"body":{"fill":"white","cursor":"pointer","stoke":"black"},"label":{"fill":"black","text":"Element #1","cursor":"pointer"}}},{"type":"standard.Rectangle","position":{"x":400,"y":30},"size":{"width":100,"height":40},"angle":0,"id":"b925dc8f-7db2-4a6e-8f4e-821a80cefe29","z":1,"attrs":{"body":{"fill":"white","cursor":"pointer","stoke":"black"},"label":{"fill":"black","text":"Element #2","cursor":"pointer"}}},{"type":"standard.Link","source":{"id":"e0639e49-d7d0-4055-9ac5-733795418c97"},"target":{"id":"b925dc8f-7db2-4a6e-8f4e-821a80cefe29"},"id":"d6ca7828-a9fd-46c9-9b7c-21508790d87c","labels":[{"markup":[{"tagName":"rect","selector":"body"},{"tagName":"text","selector":"label"}],"attrs":{"label":{"cursor":"pointer","text":"Link","textAnchor":"middle","textVerticalAnchor":"middle","fontSize":12,"fill":"black"},"body":{"cursor":"pointer","ref":"label","refX":"-10%","refY":"-10%","refWidth":"120%","refHeight":"120%","fill":"white","stroke":"black","strokeWidth":2}}}],"z":2,"attrs":{"line":{"stroke":"black"}}},{"type":"standard.Rectangle","position":{"x":250,"y":70},"size":{"width":100,"height":20},"angle":0,"id":"160620e6-a95b-48a0-b684-f34ea3d7705d","z":3,"attrs":{"body":{"fill":"white","visibility":"hidden","cursor":"default","stoke":"black"},"label":{"fontSize":12,"fill":"black","visibility":"hidden","text":"Link clicked","cursor":"default"}}}]}'));
+            graph.fromJSON(
+                {
+                    "cells": [
+                        {
+                            "type": "standard.Rectangle",
+                            "size": {
+                                "width": 100,
+                                "height": 40
+                            },
+                            "angle": 0,
+                            "id": "1",
+                            "z": 1,
+                            "attrs": {
+                                "body": {
+                                    "fill": "white",
+                                    "cursor": "pointer",
+                                    "stoke": "black"
+                                },
+                                "label": {
+                                    "fill": "black",
+                                    "text": "Element #1",
+                                    "cursor": "pointer"
+                                }
+                            }
+                        },
+                        {
+                            "type": "standard.Rectangle",
+                            "size": {
+                                "width": 100,
+                                "height": 40
+                            },
+                            "angle": 0,
+                            "id": "2",
+                            "z": 1,
+                            "attrs": {
+                                "body": {
+                                    "fill": "white",
+                                    "cursor": "pointer",
+                                    "stoke": "black"
+                                },
+                                "label": {
+                                    "fill": "black",
+                                    "text": "Element #2",
+                                    "cursor": "pointer"
+                                }
+                            }
+                        },
+                        {
+                            "type": "standard.Link",
+                            "source": {
+                                "id": "1"
+                            },
+                            "target": {
+                                "id": "2"
+                            },
+                            "id": "c7359e16-dff1-4f5a-ad7d-5bd7e23a1f12",
+                            "z": 2,
+                            "attrs": {
+
+                            }
+                        }
+                    ]
+                }
+            );
+
+            joint.layout.DirectedGraph.layout(graph, { setLinkVertices: false });
+
         }, 2000);
 
     </script>
