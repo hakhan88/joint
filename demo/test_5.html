@@ -108,7 +108,9 @@
                 }
             );
 
-            joint.layout.DirectedGraph.layout(graph, { setLinkVertices: false });
+            setTimeout(() => {
+                joint.layout.DirectedGraph.layout(graph, { setLinkVertices: false });
+            }, 2000);
 
         }, 2000);
 

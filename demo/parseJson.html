@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/2.1.0/joint.css" />
+</head>
+
+<body>
+    <!-- content -->
+    <div id="myholder"></div>
+
+    <!-- dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/graphlib/2.1.8/graphlib.min.js"
+        integrity="sha512-KV/PFSmTCD8e1BUHY6DJVSi/LW/2kLPzC+0IT2ydsi+sW14TJUFxFsitd8HZVYb2b6KiMx3T29H2z7pcNgtUmQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"
+        integrity="sha512-psLUZfcgPmi012lcpVHkWoOqyztollwCGu4w/mXijFMK/YcdUdP06voJNVOJ7f/dUIlO2tGlDLuypRyXX2lcvQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/2.1.0/joint.js"></script>
+
+    <!-- code -->
+    <script type="text/javascript">
+        var jsonToParse = {
+            "entities": [
+                {
+                    "id": 1,
+                    "desc": "Company A",
+                    "desc2": "",
+                    "desc3": ""
+                },
+                {
+                    "id": 2,
+                    "desc": "Company PQR",
+                    "desc2": "Holding Company",
+                    "desc3": ""
+                },
+                {
+                    "id": 3,
+                    "desc": "Mr.P",
+                    "desc2": "Shareholder",
+                    "desc3": "20%"
+                },
+                {
+                    "id": 4,
+                    "desc": "Mr.R",
+                    "desc2": "Shareholder",
+                    "desc3": "20%"
+                },
+                {
+                    "id": 5,
+                    "desc": "Company XYZ",
+                    "desc2": "Holding Company",
+                    "desc3": ""
+                },
+                {
+                    "id": 6,
+                    "desc": "Mr.X",
+                    "desc2": "Shareholder",
+                    "desc3": "2%"
+                },
+                {
+                    "id": 7,
+                    "desc": "Mr.Y",
+                    "desc2": "Shareholder",
+                    "desc3": "2%"
+                },
+                {
+                    "id": 8,
+                    "desc": "Company LMN",
+                    "desc2": "Holding Company",
+                    "desc3": ""
+                },
+                {
+                    "id": 9,
+                    "desc": "Mr.A",
+                    "desc2": "Shareholder",
+                    "desc3": "48%"
+                }
+            ],
+            "links": [
+                {
+                    "from": 1,
+                    "to": 2,
+                    "desc": "40%"
+                },
+                {
+                    "from": 1,
+                    "to": 5,
+                    "desc": "40%"
+                },
+                {
+                    "from": 1,
+                    "to": 9,
+                    "desc": "20%"
+                },
+                {
+                    "from": 2,
+                    "to": 3,
+                    "desc": "50%"
+                },
+                {
+                    "from": 2,
+                    "to": 4,
+                    "desc": "50%"
+                },
+                {
+                    "from": 5,
+                    "to": 6,
+                    "desc": "25%"
+                },
+                {
+                    "from": 5,
+                    "to": 7,
+                    "desc": "5%"
+                },
+                {
+                    "from": 5,
+                    "to": 8,
+                    "desc": "70%"
+                },
+                {
+                    "from": 8,
+                    "to": 9,
+                    "desc": "100%"
+                }
+            ]
+        }
+
+
+        var cells = [];
+        class CellNodeModel {
+            constructor(id, text) {
+                this.id = id;
+                this.text = text;
+            }
+            getModel() {
+                return {
+                    "type": "standard.Rectangle",
+                    "size": {
+                        "width": 100,
+                        "height": 40
+                    },
+                    "angle": 0,
+                    "id": this.id,
+                    "attrs": {
+                        "body": {
+                            "fill": "white",
+                            "cursor": "pointer",
+                            "stoke": "black"
+                        },
+                        "label": {
+                            "fill": "black",
+                            "text": this.text,
+                            "cursor": "pointer"
+                        }
+                    }
+                }
+            }
+        }
+
+        class CellLinkeModel {
+            constructor(idFrom, idTo, text) {
+                this.idFrom = idFrom;
+                this.idTo = idTo;
+                this.text = text;
+            }
+            getModel() {
+                return {
+                    "type": "standard.Link",
+                    "source": {
+                        "id": this.idFrom
+                    },
+                    "target": {
+                        "id": this.idTo
+                    },
+                    "labels": [
+                        {
+                            "attrs": {
+                                "text": {
+                                    "text": this.text
+                                }
+                            }
+                        }
+                    ],
+                }
+            }
+        }
+
+        jsonToParse.entities.map(entity => {
+            var newModel = new CellNodeModel(entity.id, entity.desc)
+            cells.push(newModel.getModel());
+        });
+        jsonToParse.links.map(entity => {
+            var newModel = new CellLinkeModel(entity.from, entity.to, entity.desc)
+            cells.push(newModel.getModel());
+        });
+
+        console.log('entities:', jsonToParse.entities);
+        console.log('links:', jsonToParse.links);
+        console.log('cells:', cells);
+
+        var graph = new joint.dia.Graph;
+
+        var paper = new joint.dia.Paper({
+            el: document.getElementById('myholder'),
+            model: graph,
+            width: 1000,
+            height: 1000,
+            gridSize: 1,
+            background: {
+                color: 'white'
+            },
+            interactive: true
+        });
+
+        graph.fromJSON({ cells });
+        joint.layout.DirectedGraph.layout(graph, { setLinkVertices: false });
+
+    </script>
+</body>
+
+</html>

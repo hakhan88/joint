@@ -96,6 +96,8 @@
         }]);
         link.addTo(graph);
 
+        console.log(JSON.stringify(graph.toJSON()));
+
         var rect3 = new joint.shapes.standard.Rectangle();
         rect3.position(100, 130);
         rect3.resize(100, 40);
