@@ -132,16 +132,20 @@
 
         var cells = [];
         class CellNodeModel {
-            constructor(id, text) {
+            constructor(id, text, text2, text3, text4) {
                 this.id = id;
                 this.text = text;
+                this.text2 = text2;
+                this.text3 = text3;
+                this.text4 = text4;
+                this.fullDescriptionText = `${this.text ? this.text + '\n' : ''}${this.text2 ? '(' + this.text2 + ')\n' : ''}${this.text3 ? '(' + this.text3 + ')\n' : ''}${this.text4 ? '(' + this.text4 + ')\n' : ''}`;
             }
             getModel() {
                 return {
                     "type": "standard.Rectangle",
                     "size": {
-                        "width": 100,
-                        "height": 40
+                        "width": 150,
+                        "height": 80
                     },
                     "angle": 0,
                     "id": this.id,
@@ -153,7 +157,7 @@
                         },
                         "label": {
                             "fill": "black",
-                            "text": this.text,
+                            "text": `${this.fullDescriptionText}`,
                             "cursor": "pointer"
                         }
                     }
@@ -180,8 +184,8 @@
                         {
                             "attrs": {
                                 "text": {
-                                    "text": this.text
-                                }
+                                    "text": `${this.text}`
+                                },
                             }
                         }
                     ],
@@ -190,7 +194,7 @@
         }
 
         jsonToParse.entities.map(entity => {
-            var newModel = new CellNodeModel(entity.id, entity.desc)
+            var newModel = new CellNodeModel(entity.id, entity.desc, entity.desc2, entity.desc3, entity.desc4)
             cells.push(newModel.getModel());
         });
         jsonToParse.links.map(entity => {
@@ -198,17 +202,13 @@
             cells.push(newModel.getModel());
         });
 
-        console.log('entities:', jsonToParse.entities);
-        console.log('links:', jsonToParse.links);
-        console.log('cells:', cells);
-
         var graph = new joint.dia.Graph;
 
         var paper = new joint.dia.Paper({
             el: document.getElementById('myholder'),
             model: graph,
-            width: 1000,
-            height: 1000,
+            width: 1200,
+            height: 1200,
             gridSize: 1,
             background: {
                 color: 'white'
